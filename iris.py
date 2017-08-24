@@ -43,24 +43,24 @@ def main():
   # Build 3 layer DNN with 10, 20, 10 units respectively.
   classifier = tf.estimator.DNNClassifier(feature_columns=feature_columns,
                                           hidden_units=[10, 20, 10],
-                                          n_classes=3,
+                                          n_classes=4,
                                           model_dir="/var/www/tensorflow/iris_model")
   # Define the training inputs
   train_input_fn = tf.estimator.inputs.numpy_input_fn(
       x={"x": np.array(training_set.data)},
       y=np.array(training_set.target),
-      num_epochs=None,
+      num_epochs=30,
       shuffle=True)
 
   # Train model.
-  classifier.train(input_fn=train_input_fn, steps=2000)
+  classifier.train(input_fn=train_input_fn, steps=20)
 
   # Define the test inputs
   test_input_fn = tf.estimator.inputs.numpy_input_fn(
       x={"x": np.array(test_set.data)},
       y=np.array(test_set.target),
-      num_epochs=1,
-      shuffle=False)
+      num_epochs=30,
+      shuffle=True)
 
   # Evaluate accuracy.
   accuracy_score = classifier.evaluate(input_fn=test_input_fn)["accuracy"]
